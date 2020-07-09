@@ -36,6 +36,8 @@ use crate::blockchain::utils::blkfile::BlkFile;
 use crate::callbacks::csvdump::CsvDump;
 use crate::callbacks::stats::SimpleStats;
 use crate::callbacks::unspentcsvdump::UnspentCsvDump;
+use crate::callbacks::unspentmongodump::UnspentMongoDump;
+
 use crate::callbacks::Callback;
 use crate::common::logger::SimpleLogger;
 use crate::errors::{OpError, OpErrorKind, OpResult};
@@ -230,6 +232,7 @@ fn parse_args() -> OpResult<ParserOptions> {
         .subcommand(UnspentCsvDump::build_subcommand())
         .subcommand(CsvDump::build_subcommand())
         .subcommand(SimpleStats::build_subcommand())
+        .subcommand(UnspentMongoDump::build_subcommand())
         .get_matches();
 
     // Set flags
@@ -260,6 +263,8 @@ fn parse_args() -> OpResult<ParserOptions> {
         callback = Box::new(CsvDump::new(matches)?);
     } else if let Some(ref matches) = matches.subcommand_matches("unspentcsvdump") {
         callback = Box::new(UnspentCsvDump::new(matches)?);
+    } else if let Some(ref matches) = matches.subcommand_matches("unspentmongodump") {
+        callback = Box::new(UnspentMongoDump::new(matches)?);
     } else {
         clap::Error {
             message: String::from("error: No Callback specified.\nFor more information try --help"),

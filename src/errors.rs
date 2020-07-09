@@ -196,6 +196,12 @@ impl convert::From<json::DecoderError> for OpError {
     }
 }
 
+impl convert::From<mongodb::error::Error> for OpError {
+    fn from(err: mongodb::error::Error) -> OpError {
+        OpError::new(OpErrorKind::JsonError(String::from(err.description())))
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;

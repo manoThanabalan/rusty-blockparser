@@ -1,6 +1,8 @@
 pub mod csvdump;
 pub mod stats;
 pub mod unspentcsvdump;
+pub mod unspentmongodump;
+
 
 use clap::{App, ArgMatches};
 
